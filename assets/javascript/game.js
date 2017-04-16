@@ -78,6 +78,7 @@ function selectOpponent () {
 		$(this).addClass("defender");
 		$(this).removeClass("character");
 		var charName = $(this).attr("value")
+		console.log($(this).attr("value"));
 		currentOpponent = characters[charName];
 		//remove player's character from the selectEnemies container variable
 		delete selectFromEnemies[charName];
@@ -92,6 +93,7 @@ function selectOpponent () {
 }
 
 function opponentDefeated () {
+	currentOpponent = {};
 	$(".defender").addClass("defeated");
 	$(".defender").removeClass("defender");
 		var moveToDefeated = $(".defeated");
@@ -101,7 +103,6 @@ function opponentDefeated () {
 
 function calculateStats () {
 	$("#attack").on("click", function() {
-		
 		//reduce opponent hp with each attack
 		currentOpponent.hp = currentOpponent.hp - currentCharacter.attackPower;
 		//reduce player's hp from counterattack
