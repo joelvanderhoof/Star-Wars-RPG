@@ -74,11 +74,9 @@ function selectCharacter () {
 function selectOpponent () {
 	$("#enemies").on("click", function() {
 		$(".character").one("click", function() {
-		console.log(this);
 		//change the character's class to player
 		$(this).addClass("defender");
 		$(this).removeClass("character");
-		console.log(this);
 		var charName = $(this).attr("value")
 		currentOpponent = characters[charName];
 		//remove player's character from the selectEnemies container variable
@@ -89,22 +87,40 @@ function selectOpponent () {
 		//append that 
 		$("#defender").append(moveToDefender);
 
-
 		});
 	});
 }
 
+function opponentDefeated () {
+	$(".defender").addClass("defeated");
+	$(".defender").removeClass("defender");
+		var moveToDefeated = $(".defeated");
+		//append that 
+		$("#defeated").append(moveToDefeated);
+}
+
 function calculateStats () {
-	$("#defender").on("click", function() {
+	$("#attack").on("click", function() {
+		
 		//reduce opponent hp with each attack
 		currentOpponent.hp = currentOpponent.hp - currentCharacter.attackPower;
 		//reduce player's hp from counterattack
-		currentCharacter.hp = currentCharacter.hp - currentOpponent.counterattack;
+		currentCharacter.hp = currentCharacter.hp - currentOpponent.counterAttack;
 		//increase player's attack power by its base each time the button is clicked
 		currentCharacter.attackPower += currentCharacter.attackPower;
-		console.log("player: " + currentCharacter);
-		console.log("opponent: " + currentOpponent);
-		//if the defender is defeated, move to the defeated section
+		console.log("player: " + currentCharacter.hp);
+		console.log("opponent: " + currentOpponent.hp);
+		console.log("attack power: " + currentCharacter.attackPower);
+		//Fight!!!
+		if (currentOpponent.hp <= 0) {
+			//if the defender is defeated, move to the defeated section
+			alert("Opponent Defeated!!!");
+			opponentDefeated();
+
+			//
+		} else if (currentCharacter.hp <= 0) {
+			alert("Game Over!!!!");
+		}
 	});
 }
 $(document).ready(function () {
