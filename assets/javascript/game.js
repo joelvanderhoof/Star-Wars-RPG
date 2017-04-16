@@ -7,29 +7,29 @@ var characters = {
 		//Attributes should be distributed so that each character can defeat all other characters by picking them in the right order
 		//HP cannot be recovered
 		//Counter attack power does not increase
-	luke: {
+	"luke": {
 		name: "Luke Skywalker",
-		hp: 100;
-		attackPower: ; //attack power should increase by the base each time attack is clicked
-		counterAttack: ;
+		hp: 100,
+		attackPower: 10, //attack power should increase by the base each time attack is clicked
+		counterAttack: 15,
 	},
-	obiWan: {
-			name: "Obi Wan Kenobi",
-		hp: 120;
-		attackPower: ;
-		counterAttack: ;
+	"obiWan": {
+		name: "Obi Wan Kenobi",
+		hp: 120,
+		attackPower: 12,
+		counterAttack: 15,
 	},
-	darthMaul: {
-			name: "Darth Maul",
-		hp: 100;
-		attackPower: ;
-		counterAttack: ;
+	"darthMaul": {
+		name: "Darth Maul",
+		hp: 100,
+		attackPower: 14,
+		counterAttack: 14,
 	},
-	darthSidious: {
-			name: "Darth Sidious",
-		hp: 150;
-		attackPower: ;
-		counterAttack: ;
+	"darthSidious": {
+		name: "Darth Sidious",
+		hp: 150,
+		attackPower: 15,
+		counterAttack: 20,
 	}
 };
 
@@ -40,17 +40,91 @@ var characters = {
 //Pick a character
 //Cannot pick another charachter until next game
 //Character is chosen when user clicks on the fighter's picture
-function pickCharacter () {
+var currentCharacter = {};
+var selectFromEnemies = characters;
+var currentOpponent = {};
+var defeatedEnemies = [];
 
+function selectCharacter () {
+	$(".character").on("click", function() {
+		console.log("this: " + this);
+		var charName = $(this).attr("value")
+		currentCharacter = characters[charName];
+		//remove player's character from the selectEnemies container variable
+		delete selectFromEnemies[charName];
+		
+		//copy the inner html of the tag with the payer's character's id to a variable
+		moveToPlayerCharacter = $(this).html();
+		console.log("moving: " + moveToPlayerCharacter);
+		//append that 
+		$("#player-character").append(moveToPlayerCharacter);
+		//remove  the tag with the character's ID
+		$(this).remove();
+
+
+
+
+		//copy all of the inner html from the tag with the characters id to a variable
+		// moveToEnemies = $()
+		//insert that variable in the inner html of the tag with the enemies id
+
+		//remove all of the inner html from the tag with the characters id
+
+
+
+
+
+		// //loop through the selectFromEnemies array, remove the <div> tags with those values from the characters area
+		// for(i=0; i<characters.length; i++) {
+		// 	console.log("You selected: " + characters[i].name);
+		// 	// //add those  tags to the Enemies area
+		// 	// $("#enemies").append("<div class=\"characters\" value =" + characters[i].name + "></div>");
+		// 	// //remove those tags from the characters area
+		// 	// removechar = "#" + String(characters[i].name);
+		// 	// $("#" +  + "").remove();
+		// }
+
+		
+	});
 }
+
+function selectOpponent () {
+	$(".enemies").on("click", function() {
+		var charName = $(this).attr("value")
+		currentOpponent = selectFromEnemies[charName];
+		console.log("opponent: " + currentOpponent);
+		//remove player's character from the selectEnemies container variable
+		delete selectFromEnemies[charName];
+		console.log(selectFromEnemies);
+	});
+}
+
+function calculateStats () {
+	$("#defender").on("click", function() {
+		//reduce opponent hp with each attack
+		currentOpponent.hp = currentOpponent.hp - currentCharacter.attackPower;
+		//reduce player's hp from counterattack
+		currentCharacter.hp = currentCharacter.hp - currentOpponent.counterattack;
+		//increase player's attack power by its base each time the button is clicked
+		currentCharacter.attackPower += currentCharacter.attackPower;
+		console.log("player: " + currentCharacter);
+		console.log("opponent: " + currentOpponent);
+		//if the defender is defeated, move to the defeated section
+	});
+}
+$(document).ready(function () {
+selectCharacter();
+calculateStats();
+
 
 //Pick a character to fight
 	//Character is chosen when user clicks on the fighter's picture
 
 
-	//Fighter is moved to "Defender" area
+	//Fighter is moved from the "Enemies" area to the "Defender" area
 
-
+	//set the pointer-event to none for the attack button
+	//set the pointer-event to all once an enemy is selected to be moved to the defender
 	//Attack button is enabled
 
 
@@ -100,3 +174,4 @@ function pickCharacter () {
 
 			//Reset character attributes when a key is pressed
 
+});
