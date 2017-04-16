@@ -38,7 +38,7 @@ var characters = {
 //Display message to pick character
 
 //Pick a character
-//Cannot pick another charachter until next game
+//Cannot pick another character until next game
 //Character is chosen when user clicks on the fighter's picture
 var currentCharacter = {};
 var selectFromEnemies = characters;
@@ -46,56 +46,51 @@ var currentOpponent = {};
 var defeatedEnemies = [];
 
 function selectCharacter () {
-	$(".character").on("click", function() {
-		console.log("this: " + this);
+	$(".character").one("click", function() {
+		//change the character's class to player
+		$(this).addClass("player");
+		$(this).removeClass("character");
 		var charName = $(this).attr("value")
 		currentCharacter = characters[charName];
 		//remove player's character from the selectEnemies container variable
 		delete selectFromEnemies[charName];
 		
 		//copy the inner html of the tag with the payer's character's id to a variable
-		moveToPlayerCharacter = $(this).html();
-		console.log("moving: " + moveToPlayerCharacter);
+		moveToPlayerCharacter = $(this);
 		//append that 
 		$("#player-character").append(moveToPlayerCharacter);
-		//remove  the tag with the character's ID
-		$(this).remove();
-
-
 
 
 		//copy all of the inner html from the tag with the characters id to a variable
-		// moveToEnemies = $()
+		moveToEnemies = $("#characters").html();
 		//insert that variable in the inner html of the tag with the enemies id
-
+		$("#enemies").html(moveToEnemies);
 		//remove all of the inner html from the tag with the characters id
-
-
-
-
-
-		// //loop through the selectFromEnemies array, remove the <div> tags with those values from the characters area
-		// for(i=0; i<characters.length; i++) {
-		// 	console.log("You selected: " + characters[i].name);
-		// 	// //add those  tags to the Enemies area
-		// 	// $("#enemies").append("<div class=\"characters\" value =" + characters[i].name + "></div>");
-		// 	// //remove those tags from the characters area
-		// 	// removechar = "#" + String(characters[i].name);
-		// 	// $("#" +  + "").remove();
-		// }
-
+		$("#characters").remove();
 		
 	});
 }
 
 function selectOpponent () {
-	$(".enemies").on("click", function() {
+	$("#enemies").on("click", function() {
+		$(".character").one("click", function() {
+		console.log(this);
+		//change the character's class to player
+		$(this).addClass("defender");
+		$(this).removeClass("character");
+		console.log(this);
 		var charName = $(this).attr("value")
-		currentOpponent = selectFromEnemies[charName];
-		console.log("opponent: " + currentOpponent);
+		currentOpponent = characters[charName];
 		//remove player's character from the selectEnemies container variable
 		delete selectFromEnemies[charName];
-		console.log(selectFromEnemies);
+		
+		//copy the inner html of the tag with the payer's character's id to a variable
+		moveToDefender = $(this);
+		//append that 
+		$("#defender").append(moveToDefender);
+
+
+		});
 	});
 }
 
@@ -115,6 +110,7 @@ function calculateStats () {
 $(document).ready(function () {
 selectCharacter();
 calculateStats();
+selectOpponent();
 
 
 //Pick a character to fight
